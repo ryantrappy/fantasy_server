@@ -13,11 +13,10 @@ class LeaguesRoute implements Route {
   }
 
   private initializeRoutes() {
-    // this.router.get(`${this.path}`, this.usersController.getUsers);
     this.router.get(`${this.path}/:id`, this.leaguesController.getClient);
-    // this.router.post(`${this.path}`, this.usersController.createUser);
-    // this.router.put(`${this.path}/:id`, validationMiddleware(CreateUserDto, true), this.usersController.updateUser);
-    // this.router.delete(`${this.path}/:id`, this.usersController.deleteUser);
+    this.router.get(`${this.path}/:leagueId/seasons/:seasonId`, this.leaguesController.getLeagueInfoForSeason);
+    this.router.get(`${this.path}/:leagueId/seasons/:seasonId/weeks/:scoringPeriodId`, this.leaguesController.getBoxScoresForWeek);
+    this.router.get(`${this.path}/:leagueId/seasons/:seasonId/weeks/:scoringPeriodId/teams`, this.leaguesController.getTeamsForWeek);
   }
 }
 
