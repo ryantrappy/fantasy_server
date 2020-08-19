@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { CreateUserDto } from '../dtos/users.dto';
 import { User } from '../interfaces/users.interface';
 import UserService from '../services/users.service';
+import {cleanReturnUserObject} from '../utils/util';
 
 class UsersController {
   public userService = new UserService();
@@ -20,7 +21,8 @@ class UsersController {
 
     try {
       const findOneUserData: User = await this.userService.findUserById(userId);
-      res.status(200).json({ data: findOneUserData, message: 'findOne' });
+      const userResult = cleanReturnUserObject(findOneUserData);
+      res.status(200).json({ data: userResult, message: 'findOne' });
     } catch (error) {
       next(error);
     }

@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dtos/users.dto';
 import AuthService from '../services/auth.service';
 import { User } from '../interfaces/users.interface';
 import { RequestWithUser } from '../interfaces/auth.interface';
+import {cleanReturnUserObject} from '../utils/util';
 
 class AuthController {
   public authService = new AuthService();
@@ -24,11 +25,7 @@ class AuthController {
 
     try {
       const { cookie, findUser } = await this.authService.login(userData);
-      const userResult = {
-      	email: findUser.email,
-	      id: findUser._id,
-	      leagues: findUser.leagues
-      };
+	    const userResult = cleanReturnUserObject(findUser)
       res.setHeader('Set-Cookie', [cookie]);
       res.status(200).json({ data: cookie, userData: userResult });
     } catch (error) {
