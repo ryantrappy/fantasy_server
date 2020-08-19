@@ -17,6 +17,7 @@ async function authMiddleware(req: RequestWithUser, res: Response, next: NextFun
 
       if (findUser) {
         req.user = findUser;
+        res.locals.user = findUser;
         next();
       } else {
         next(new HttpException(401, 'Wrong authentication token'));

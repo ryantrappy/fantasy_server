@@ -24,8 +24,13 @@ class AuthController {
 
     try {
       const { cookie, findUser } = await this.authService.login(userData);
+      const userResult = {
+      	email: findUser.email,
+	      id: findUser._id,
+	      leagues: findUser.leagues
+      };
       res.setHeader('Set-Cookie', [cookie]);
-      res.status(200).json({ data: cookie });
+      res.status(200).json({ data: cookie, userData: userResult });
     } catch (error) {
       next(error);
     }

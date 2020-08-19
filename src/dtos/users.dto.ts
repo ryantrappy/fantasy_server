@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from 'class-validator';
+import {IsArray, IsEmail, IsString} from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -6,4 +6,15 @@ export class CreateUserDto {
 
   @IsString()
   public password: string
+
+	@IsArray()
+	public leagues: [string]
+}
+
+export class UpdateUserDto {
+	@IsEmail()
+	public email: string;
+
+	@IsArray()
+	public leagues: [string]
 }

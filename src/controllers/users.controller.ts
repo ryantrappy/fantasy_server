@@ -40,6 +40,8 @@ class UsersController {
   public updateUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId: string = req.params.id;
     const userData: User = req.body;
+    // Used to inject password for auth deeper down
+    if(res.locals.user) userData.password = res.locals.user.password;
 
     try {
       const updateUserData: User = await this.userService.updateUser(userId, userData);
