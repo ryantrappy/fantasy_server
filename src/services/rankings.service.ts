@@ -8,6 +8,9 @@ class RankingsService {
     public async createNewRanking(rankingObject: WeeklyRanking): Promise<WeeklyRanking> {
 	    if (isEmptyObject(rankingObject)) throw new HttpException(400, "RankingObject empty");
 
+	    const current: WeeklyRanking[] = await this.getByLeagueAndTime(rankingObject.leagueId, rankingObject.week, rankingObject.year);
+			if(!isEmptyObject(current)) throw new HttpException(400, "RankingObject already exists");
+
 	    return await this.weeklyRankings.create(rankingObject);
     }
 
@@ -30,8 +33,17 @@ class RankingsService {
 	    }
 		const rankingResults: WeeklyRanking[] = await this.weeklyRankings.find(query);
 
-		if (isEmptyObject(rankingResults)) throw new HttpException(400, "RankingId did not exist");
+		if (isEmptyObject(rankingResults)) throw new HttpException(400, "Rankings did not exist");
 		return rankingResults;
+	}
+
+	public async getByLeagueAndTime(leagueId: string, week: number, year: number): Promise<WeeklyRanking[]> {
+		const query = {
+			leagueId,
+			week,
+			year
+		}
+		return this.weeklyRankings.find(query);
 	}
 }
 export default RankingsService;
