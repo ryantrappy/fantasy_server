@@ -17,6 +17,7 @@ class RankingsRoute implements Route {
     this.router.post(`${this.path}`, validationMiddleware(CreateRankingDto), this.rankingsController.createNewRanking);
 	  this.router.put(`${this.path}/:id`, validationMiddleware(CreateRankingDto), this.rankingsController.updateRanking);
 	  this.router.get(`${this.path}/:id`, this.rankingsController.getRankingById);
+	  this.router.get(`${this.path}/leagues/:leagueId`, this.rankingsController.getRankingByLeagueId);
 
   }
 }

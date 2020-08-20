@@ -23,5 +23,15 @@ class RankingsService {
 		if (isEmptyObject(rankingResult)) throw new HttpException(400, "RankingId did not exist");
 		return rankingResult;
 	}
+
+	public async getByLeagueId(leagueId: string): Promise<WeeklyRanking[]> {
+    	const query = {
+    		leagueId
+	    }
+		const rankingResults: WeeklyRanking[] = await this.weeklyRankings.find(query);
+
+		if (isEmptyObject(rankingResults)) throw new HttpException(400, "RankingId did not exist");
+		return rankingResults;
+	}
 }
 export default RankingsService;

@@ -42,5 +42,17 @@ class RankingsController {
 			next(error);
 		}
 	}
+
+	public getRankingByLeagueId = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const leagueId = req.params.leagueId;
+
+			const rankingResults: WeeklyRanking[] = await this.rankingService.getByLeagueId(leagueId)
+
+			res.status(200).json(rankingResults );
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 export default RankingsController;
