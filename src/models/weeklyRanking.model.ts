@@ -16,6 +16,9 @@ const weeklyRankingSchema = new mongoose.Schema(
 	{
 		rankingsTitle: String,
 		introduction: String,
+		leagueId: String,
+		week: Number,
+		year: Number,
 		teams: { type: [teamRankingSchema], required: true },
 	});
 
