@@ -2,11 +2,13 @@ import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as helmet from 'helmet';
+import * as nocache from 'nocache';
 import * as hpp from 'hpp';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
+import localsMiddleware from './middlewares/locals.middleware';
 
 class App {
   public app: express.Application;
@@ -45,9 +47,12 @@ class App {
       this.app.use(cors({ origin: true, credentials: true }));
     }
 
+	  this.app.disable('etag');
+	  this.app.use(nocache());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(localsMiddleware);
   }
 
   private initializeRoutes(routes: Routes[]) {

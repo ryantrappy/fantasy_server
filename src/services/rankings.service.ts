@@ -33,7 +33,7 @@ class RankingsService {
 	    }
 		const rankingResults: WeeklyRanking[] = await this.weeklyRankings.find(query);
 
-		if (isEmptyObject(rankingResults)) throw new HttpException(400, "Rankings did not exist");
+		if (isEmptyObject(rankingResults)) return [];
 		return rankingResults;
 	}
 

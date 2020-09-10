@@ -21,7 +21,7 @@ describe('Testing AuthController', () => {
             };
 
             const authRoute = new AuthRoute();
-            
+
             authRoute.authController.authService.users.findOne = jest
             .fn()
             .mockReturnValue(Promise.resolve(undefined));
@@ -81,9 +81,9 @@ describe('Testing AuthController', () => {
 describe('Testing AuthService', () => {
     describe('when creating a cookie', () => {
         it('should return a string', () => {
-            const tokenData: TokenData = { 
+            const tokenData: TokenData = {
                 token: '',
-                expiresIn: 1 
+                expiresIn: 1
             };
 
             const authService = new AuthService();
@@ -119,9 +119,9 @@ describe('Testing AuthService', () => {
               password: 'q1w2e3r4'
             };
             process.env.JWT_SECRET = 'jwt_secret';
-        
+
             const authService = new AuthService();
-        
+
             authService.users.findOne = jest
             .fn()
             .mockReturnValue(Promise.resolve(undefined));
@@ -129,7 +129,7 @@ describe('Testing AuthService', () => {
             authService.users.create = jest
             .fn()
             .mockReturnValue({ _id: 0, ...userData });
-        
+
             await expect(authService.signup(userData))
             .resolves.toBeDefined();
       });

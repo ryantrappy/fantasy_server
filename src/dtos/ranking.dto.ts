@@ -1,4 +1,4 @@
-import {IsArray, IsNumber, IsString} from 'class-validator';
+import {IsArray, IsDefined, IsNumber, IsString} from 'class-validator';
 
 export class CreateRankingDto {
   @IsString()
@@ -16,6 +16,6 @@ export class CreateRankingDto {
 	@IsNumber()
 	public week: number;
 
-	@IsNumber()
+	@IsDefined()
 	public year: number;
 }

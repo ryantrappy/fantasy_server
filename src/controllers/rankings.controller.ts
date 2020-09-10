@@ -29,7 +29,7 @@ class RankingsController {
 		} catch (error) {
 			next(error);
 		}
-	}
+	};
 
 	public getRankingById = async (req: Request, res: Response, next: NextFunction) => {
 		try {
@@ -41,7 +41,7 @@ class RankingsController {
 		} catch (error) {
 			next(error);
 		}
-	}
+	};
 
 	public getRankingByLeagueId = async (req: Request, res: Response, next: NextFunction) => {
 		try {
