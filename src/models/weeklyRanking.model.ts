@@ -4,13 +4,15 @@ import {WeeklyRanking} from '../interfaces/weeklyRanking.interface';
 const teamRankingSchema= new mongoose.Schema(
 	{
 		teamName: String,
+    teamId: Number,
 		description: String,
 		managerName: String,
+    position: Number,
 		wins: Number,
 		loss: Number,
 		ties: Number,
 		delta: { type: Number, default: 0 }
-	})
+	});
 
 const weeklyRankingSchema = new mongoose.Schema(
 	{

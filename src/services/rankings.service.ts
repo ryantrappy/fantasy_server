@@ -15,10 +15,21 @@ class RankingsService {
     }
 
 	public async updateRanking(rankingId: string, rankingObject: WeeklyRanking): Promise<WeeklyRanking> {
-		if (isEmptyObject(rankingObject)) throw new HttpException(400, "RankingObject empty");
+    if (isEmptyObject(rankingObject)) throw new HttpException(400, "RankingObject empty");
 
-		return this.weeklyRankings.findByIdAndUpdate(rankingId, rankingObject);
-	}
+    return this.weeklyRankings.findByIdAndUpdate(rankingId, rankingObject);
+  }
+
+  public async updateRankingByWeek(leagueId: string, week: number, season: number,
+                                   rankingObject: WeeklyRanking): Promise<WeeklyRanking> {
+    if (isEmptyObject(rankingObject)) throw new HttpException(400, "RankingObject empty");
+
+    const query = {
+      leagueId, week, season
+    };
+
+    return this.weeklyRankings.findOneAndUpdate(query, rankingObject);
+  }
 
 	public async getRankingById(rankingId: string): Promise<WeeklyRanking> {
 		 const rankingResult: WeeklyRanking = await this.weeklyRankings.findById(rankingId);
@@ -30,8 +41,8 @@ class RankingsService {
 	public async getByLeagueId(leagueId: string): Promise<WeeklyRanking[]> {
     	const query = {
     		leagueId
-	    }
-		const rankingResults: WeeklyRanking[] = await this.weeklyRankings.find(query);
+	    };
+		const rankingResults: WeeklyRanking[] = await this.weeklyRankings.find(query).sort({ year: 1, week: 1});
 
 		if (isEmptyObject(rankingResults)) return [];
 		return rankingResults;

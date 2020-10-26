@@ -30,6 +30,20 @@ class RankingsController {
 			next(error);
 		}
 	};
+  public updateRankingByWeekAndYear = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+      const leagueId = req.params.leagueId;
+      const seasonId = req.params.seasonId;
+      const scoringPeriodId = req.params.scoringPeriodId;
+      const weeklyRanking: WeeklyRanking = req.body;
+
+      const rankingResult: WeeklyRanking = await this.rankingService.updateRankingByWeek(leagueId, Number(scoringPeriodId),
+                                                                                         Number(seasonId), weeklyRanking)
+			res.status(200).json(rankingResult );
+		} catch (error) {
+			next(error);
+		}
+	};
 
 	public getRankingById = async (req: Request, res: Response, next: NextFunction) => {
 		try {
