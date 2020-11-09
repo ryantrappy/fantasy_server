@@ -20,12 +20,12 @@ class RankingsService {
     return this.weeklyRankings.findByIdAndUpdate(rankingId, rankingObject);
   }
 
-  public async updateRankingByWeek(leagueId: string, week: number, season: number,
+  public async updateRankingByWeek(leagueId: string, week: number, year: number,
                                    rankingObject: WeeklyRanking): Promise<WeeklyRanking> {
     if (isEmptyObject(rankingObject)) throw new HttpException(400, "RankingObject empty");
 
     const query = {
-      leagueId, week, season
+      leagueId, week, year
     };
 
     return this.weeklyRankings.findOneAndUpdate(query, rankingObject);
