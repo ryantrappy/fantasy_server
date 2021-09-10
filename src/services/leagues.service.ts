@@ -1,6 +1,4 @@
 class LeaguesService {
-    public async getScoresForWeek() {
-
-    }
+  public async getScoresForWeek() {}
 }
 export default LeaguesService;
