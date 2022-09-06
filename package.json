@@ -8,6 +8,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {
+    "@types/express-jwt": "^6.0.4",
     "axios": "^0.23.0",
     "bcrypt": "^5.0.0",
     "class-transformer": "^0.3.1",
@@ -19,10 +20,13 @@
     "envalid": "^6.0.2",
     "espn-fantasy-football-api": "^0.15.0",
     "express": "^4.17.1",
+    "express-jwt": "^7.7.5",
+    "express-oauth2-jwt-bearer": "^1.1.0",
     "helmet": "^4.1.0",
     "hpp": "^0.2.3",
     "jest": "^26.4.0",
     "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.1.4",
     "mongoose": "^5.10.0",
     "morgan": "^1.10.0",
     "nocache": "^2.1.0",

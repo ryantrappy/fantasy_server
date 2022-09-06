@@ -59,7 +59,6 @@ class SleeperLeaguesController {
       next(error);
     }
   };
-  // TODO this endpoint doesn't work for espn right now need to fix
   public getBoxScoresForWeek = async (
     req: Request,
     res: Response,
@@ -68,8 +67,11 @@ class SleeperLeaguesController {
     try {
       const leagueId = req.params.leagueId;
       const scoringPeriodId = req.params.scoringPeriodId;
-      const result: any[] = [];
-
+      const weekNumber = Number(scoringPeriodId);
+      const result = await this.sleeperService.getLeagueMatchups(
+        leagueId,
+        weekNumber
+      );
       res.status(200).json({ data: result });
     } catch (error) {
       next(error);

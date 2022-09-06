@@ -35,11 +35,12 @@ class LeaguesController {
     try {
       const leagueId = req.params.leagueId;
       const client = getClient(leagueId, res);
-      const seasonId = 2019;
-      const scoringPeriodId = 16;
+      const seasonId = 2022;
+      const scoringPeriodId = 1;
       const result = await client.getFreeAgents({ seasonId, scoringPeriodId });
       res.status(200).json({ data: result, message: "findAll" });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   };
@@ -71,6 +72,7 @@ class LeaguesController {
       const result = await client.getLeagueInfo({ seasonId });
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   };
@@ -106,7 +108,6 @@ class LeaguesController {
       next(error);
     }
   };
-  // TODO add sleeper to this endpoint
   public getBoxScoresForWeek = async (
     req: Request,
     res: Response,
@@ -116,6 +117,23 @@ class LeaguesController {
       const leagueId = req.params.leagueId;
       const seasonId = req.params.seasonId;
       const scoringPeriodId = req.params.scoringPeriodId;
+
+      const leagueObject = await this.leagueService.getLeagueById(leagueId);
+      if (leagueObject === null) {
+        res.status(400).json({ error: "League does not exist" });
+        next();
+      }
+      const { leagueType, leagueName } = leagueObject;
+      res.locals.leagueType = leagueType;
+      res.locals.leagueName = leagueName;
+
+      if (leagueType === 0) {
+        return this.sleeperLeaguesController.getBoxScoresForWeek(
+          req,
+          res,
+          next
+        );
+      }
       const client = getClient(leagueId, res);
       const matchupPeriodId = scoringPeriodId;
       const result = await client.getBoxscoreForWeek({
@@ -125,6 +143,7 @@ class LeaguesController {
       });
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   };
