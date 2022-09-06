@@ -3,10 +3,28 @@ import { getClient } from "../utils/util";
 import LeaguesService from "../services/leagues.service";
 import SleeperLeaguesController from "./sleeper/sleeperLeagues.controller";
 import SleeperRankingsController from "./sleeper/sleeperRankings.controller";
+import { WeeklyRanking } from "../interfaces/weeklyRanking.interface";
+import { League } from "../interfaces/league.interface";
 
 class LeaguesController {
   private leagueService = new LeaguesService();
   private sleeperLeaguesController = new SleeperLeaguesController();
+
+  public createNewLeague = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const leagueObject: League = req.body;
+
+      const result = await this.leagueService.createNewLeague(leagueObject);
+
+      res.status(200).json({ data: result });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   // TODO add sleeper to this endpoint
   public getClient = async (
@@ -65,9 +83,12 @@ class LeaguesController {
       const leagueId = req.params.leagueId;
       const seasonId = req.params.seasonId;
       const scoringPeriodId = req.params.scoringPeriodId;
-      const { leagueType, leagueName } = await this.leagueService.getLeagueById(
-        leagueId
-      );
+      const leagueObject = await this.leagueService.getLeagueById(leagueId);
+      if (leagueObject === null) {
+        res.status(400).json({ error: "League does not exist" });
+        next();
+      }
+      const { leagueType, leagueName } = leagueObject;
       res.locals.leagueType = leagueType;
       res.locals.leagueName = leagueName;
 

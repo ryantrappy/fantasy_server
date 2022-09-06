@@ -5,7 +5,7 @@ export interface Team {
   name: string;
   firstName: string;
   lastName: string;
-  roster: [];
+  roster: string[];
   wins: number;
   losses: number;
   ties: number;

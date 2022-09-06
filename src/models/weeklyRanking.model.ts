@@ -11,7 +11,7 @@ const teamRankingSchema= new mongoose.Schema(
 		wins: Number,
 		loss: Number,
 		ties: Number,
-		delta: { type: Number, default: 0 }
+		delta: { type: Number, default: 0, required: false }
 	});
 
 const weeklyRankingSchema = new mongoose.Schema(

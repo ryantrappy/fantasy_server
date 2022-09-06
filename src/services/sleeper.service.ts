@@ -28,7 +28,7 @@ class SleeperService {
     leagueId: string
   ): Promise<SleeperLeagueUser[]> {
     const { data } = await axios.get(
-      `https://api.sleeper.app/v1/user/${leagueId}/users`
+      `https://api.sleeper.app/v1/league/${leagueId}/users`
     );
     return data;
   }

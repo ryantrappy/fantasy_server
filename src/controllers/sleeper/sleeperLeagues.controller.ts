@@ -29,8 +29,8 @@ class SleeperLeaguesController {
   ) => {
     try {
       const leagueId = req.params.leagueId;
-      const seasonId = req.params.seasonId;
-      const scoringPeriodId = req.params.scoringPeriodId;
+      // const seasonId = req.params.seasonId;
+      // const scoringPeriodId = req.params.scoringPeriodId;
       const rosters = await this.sleeperService.getAllRostersInLeague(leagueId);
       const users = await this.sleeperService.getAllUsersInLeague(leagueId);
       const result = [];
@@ -45,7 +45,7 @@ class SleeperLeaguesController {
           name: user.metadata.team_name,
           firstName: user.display_name,
           lastName: user.display_name,
-          roster: [],
+          roster: roster.players,
           wins: roster.settings.wins,
           losses: roster.settings.losses,
           ties: roster.settings.ties,
@@ -55,6 +55,7 @@ class SleeperLeaguesController {
 
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error(error);
       next(error);
     }
   };
