@@ -13,7 +13,7 @@ class SleeperService {
     return data;
   }
   public async getLeagueById(leagueId: string): Promise<SleeperLeague> {
-    const { data } = await axios.get(
+    const { data } = await axios.get<SleeperLeague>(
       `https://api.sleeper.app/v1/league/${leagueId}`
     );
     return data;
@@ -27,7 +27,7 @@ class SleeperService {
   public async getAllUsersInLeague(
     leagueId: string
   ): Promise<SleeperLeagueUser[]> {
-    const { data } = await axios.get(
+    const { data } = await axios.get<SleeperLeagueUser[]>(
       `https://api.sleeper.app/v1/league/${leagueId}/users`
     );
     return data;
@@ -35,7 +35,7 @@ class SleeperService {
   public async getAllRostersInLeague(
     leagueId: string
   ): Promise<SleeperUserRoster[]> {
-    const { data } = await axios.get(
+    const { data } = await axios.get<SleeperUserRoster[]>(
       `https://api.sleeper.app/v1/league/${leagueId}/rosters`
     );
     return data;

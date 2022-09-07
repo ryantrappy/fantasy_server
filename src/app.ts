@@ -21,7 +21,7 @@ class App {
   constructor(routes: Routes[]) {
     this.app = express();
     this.port = process.env.PORT || 3000;
-    this.env = process.env.NODE_ENV === "production" ? true : false;
+    this.env = process.env.NODE_ENV === "production";
 
     this.connectToDatabase();
     this.initializeMiddlewares();
@@ -40,7 +40,7 @@ class App {
   }
   private initializeMiddlewares() {
     const checkJwt = auth({
-      audience: "localhost",
+      audience: "https://dev-voqmvc1s.us.auth0.com/api/v2/",
       issuerBaseURL: `https://dev-voqmvc1s.us.auth0.com/`,
     });
     if (this.env) {
@@ -50,7 +50,9 @@ class App {
       this.app.use(cors({ origin: "*", credentials: true }));
     } else {
       this.app.use(logger("dev"));
-      this.app.use(cors({ origin: true, credentials: true }));
+      this.app.use(cors({ origin: "*", credentials: true }));
+
+      // this.app.use(cors({ origin: true, credentials: true }));
     }
     this.app.use(checkJwt);
     this.app.disable("etag");

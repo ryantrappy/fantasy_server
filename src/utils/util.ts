@@ -1,18 +1,9 @@
-import { User } from "../interfaces/users.interface";
 // @ts-ignore
 import { Client } from "espn-fantasy-football-api/node-dev";
 import { Response } from "express";
 
 export const isEmptyObject = (obj: object): boolean => {
   return !Object.keys(obj).length;
-};
-
-export const cleanReturnUserObject = (user: User): User => {
-  return {
-    email: user.email,
-    _id: user._id,
-    leagues: user.leagues,
-  };
 };
 
 export const addPrivateLeagueHeaders = (res: Response, client: Client) => {

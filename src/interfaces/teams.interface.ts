@@ -9,4 +9,5 @@ export interface Team {
   wins: number;
   losses: number;
   ties: number;
+  teamId: string;
 }

@@ -43,6 +43,7 @@ class SleeperLeaguesController {
           seasonId: `${new Date().getUTCFullYear()}`, // Year isn't possible for sleeper
           abbreviation: user.metadata.team_name,
           name: user.metadata.team_name,
+          teamId: roster.roster_id.toString(),
           firstName: user.display_name,
           lastName: user.display_name,
           roster: roster.players,
