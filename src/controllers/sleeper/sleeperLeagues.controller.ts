@@ -19,6 +19,7 @@ class SleeperLeaguesController {
       };
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error("error", error);
       next(error);
     }
   };
@@ -55,6 +56,7 @@ class SleeperLeaguesController {
 
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error("error", error);
       next(error);
     }
   };
@@ -71,6 +73,7 @@ class SleeperLeaguesController {
 
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error(error.stackTrace);
       next(error);
     }
   };

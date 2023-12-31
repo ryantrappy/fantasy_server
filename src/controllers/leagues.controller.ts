@@ -53,6 +53,7 @@ class LeaguesController {
       const result = await client.getLeagueInfo({ seasonId });
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error("error", error);
       next(error);
     }
   };

@@ -28,7 +28,25 @@ class SleeperService {
     leagueId: string
   ): Promise<SleeperLeagueUser[]> {
     const { data } = await axios.get(
-      `https://api.sleeper.app/v1/user/${leagueId}/users`
+      `https://api.sleeper.app/v1/league/${leagueId}/users`
+    );
+    return data;
+  }
+  public async getTransactionsForLeague(
+    leagueId: string,
+    round?: number
+  ): Promise<any[]> {
+    const { data } = await axios.get(
+      `https://api.sleeper.app/v1/league/${leagueId}/transactions/${round}`
+    );
+    return data;
+  }
+  public async getSeasonsStatsForPlayer(
+    playerId: string,
+    seasonId: number
+  ): Promise<any> {
+    const { data } = await axios.get(
+      `https://api.sleeper.com/stats/nfl/player/${playerId}?season_type=regular&season=${seasonId}&grouping=week`
     );
     return data;
   }

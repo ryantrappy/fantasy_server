@@ -1,11 +1,11 @@
 enum LeagueType {
   Sleeper,
-  Espn
+  Espn,
 }
 
 export interface League {
   _id: string;
   leagueId: string;
   leagueName: string;
-  leagueType: LeagueType
+  leagueType: LeagueType;
 }
