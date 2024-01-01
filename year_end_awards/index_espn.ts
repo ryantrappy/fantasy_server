@@ -1,10 +1,14 @@
 import { Client } from "espn-fantasy-football-api/node-dev";
-import LeaguesController from "../src/controllers/espn/leagues.controller";
 import { Boxscore } from "../src/interfaces/boxscore";
 import { EspnTeam } from "../src/interfaces/espnTeam";
+import {
+  espnTransaction,
+  LeagueTransactions,
+  TransactionScore,
+  UserTransactions,
+} from "../src/interfaces/stats.interface";
+import { getPlayerInformation } from "../src/services/espn.service";
 const _ = require("lodash");
-
-// https://watsonfantasyfootball.espn.com/espnpartner/dallas/players/players_4374302_ESPNFantasyFootball_2023.json
 
 const espnLeagueId = "1140768";
 const seasonId = 2023;
@@ -78,5 +82,129 @@ const testTransactions = async () => {
   console.log(transactions);
 };
 
+const getPlayerDataSinceDate = async (
+  playerId: number,
+  startWeek: number,
+  endWeek: number
+) => {
+  let totalPoints = 0;
+  let playerStatsByWeek;
+  if (playerCache[playerId] === undefined) {
+    playerStatsByWeek = await getPlayerInformation(playerId, 2023);
+  } else {
+    playerStatsByWeek = playerCache[playerId];
+  }
+
+  for (let i: number = startWeek; i <= endWeek; i++) {
+    if (playerStatsByWeek[i] && playerStatsByWeek[i].ACTUAL != undefined) {
+      totalPoints = totalPoints + playerStatsByWeek[i].ACTUAL;
+    }
+  }
+  return { totalPoints, name: playerStatsByWeek[0].FULL_NAME };
+};
+
+const getPointsForUserTransactions = async (
+  userTransactions: UserTransactions
+) => {
+  for (const transaction of userTransactions.transactions) {
+    const playerInfo = await getPlayerDataSinceDate(
+      transaction.id,
+      transaction.startWeek,
+      transaction.endWeek
+    );
+    transaction.playerName = playerInfo.name;
+    transaction.points = playerInfo.totalPoints;
+  }
+};
+const createTransactionsByUser = async () => {
+  const transactionDataByUser: LeagueTransactions = {};
+  const outputObject: any = {};
+
+  const usersData: [EspnTeam] = await client.getTeamsAtWeek({
+    seasonId: seasonId,
+    scoringPeriodId: 3,
+  });
+  for (const user of usersData) {
+    transactionDataByUser[user.id] = {
+      id: user.id,
+      userName: user.name,
+      transactions: [],
+    };
+  }
+
+  for (let i = 0; i < 35; i++) {
+    let transactions: espnTransaction[] = await client
+      .getTransactionsForPeriod({
+        scoringPeriodId: i,
+        seasonId: seasonId,
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    if (!transactions) {
+      continue;
+    }
+    transactions = transactions.filter((cur) => {
+      return (
+        cur.status === "EXECUTED" &&
+        cur.type != "DRAFT" &&
+        cur.type === "FREEAGENT"
+      );
+    });
+
+    for (const transaction of transactions) {
+      for (const transactionItem of transaction.items) {
+        if (transactionItem.type === "ADD") {
+          const formattedTransaction: TransactionScore = {
+            id: transactionItem.playerId,
+            startWeek: transaction.scoringPeriodId,
+            endWeek: 13,
+            isOpen: true,
+            points: 0,
+          };
+          transactionDataByUser[transaction.teamId].transactions.push(
+            formattedTransaction
+          );
+        }
+
+        if (transactionItem.type === "DROP") {
+          const dropped = transactionDataByUser[
+            transaction.teamId
+          ].transactions.filter((cur) => {
+            return cur.id === transactionItem.playerId;
+          });
+
+          for (const drop of dropped) {
+            if (drop.isOpen) {
+              drop.isOpen = false;
+              drop.endWeek = i;
+            }
+          }
+        }
+      }
+    }
+
+    for (const user of usersData) {
+      const userTransactions = transactionDataByUser[user.id];
+      await getPointsForUserTransactions(userTransactions);
+      let userScore = 0;
+
+      for (const transaction of userTransactions.transactions) {
+        userScore = userScore + transaction.points;
+      }
+      outputObject[user.name] = {
+        totalPoints: userScore,
+        pointsPerTrans: userScore / userTransactions.transactions.length,
+      };
+    }
+  }
+
+  console.log(JSON.stringify(transactionDataByUser));
+  console.log(JSON.stringify(outputObject));
+};
+
+// 4374302
+
 // getSecondHalfRecords();
-testTransactions();
+// testTransactions();
+createTransactionsByUser();

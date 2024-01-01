@@ -1,0 +1,33 @@
+export interface WatsonPlayer {
+  ACTUAL?: number | null;
+  NEXT_GAME_TIMESTAMP: string;
+  DATA_TIMESTAMP: string;
+  SET_END: string;
+  EVENT_WEEK: number;
+  OPPONENT_NAME?: string | null;
+  OPPOSITION_RANK?: number | null;
+  PLAYERID: string;
+  FANTASY_PLAYER_ID: string;
+  SPORT_PLAYER_ID: string;
+  EVENT_NAME: string;
+  EVENT_YEAR: string;
+  FIRST_NAME: string;
+  LAST_NAME: string;
+  FULL_NAME: string;
+  POSITION: string;
+  TEAM: string;
+  TEAM_LOCATION: string;
+  AGE: number;
+  HEIGHT: number;
+  WEIGHT: number;
+  YEARS_EXPERIENCE: number;
+  PRO_TEAM_ID: string;
+  IN_WEBHOSE: string;
+  IS_ON_INJURED_RESERVE?: null;
+  IS_SUSPENDED?: null;
+  IS_ON_BYE?: null;
+  IS_FREE_AGENT?: null;
+  CURRENT_RANK: number;
+  INJURY_STATUS_DATE: string;
+  OUTSIDE_PROJECTION: number;
+}
